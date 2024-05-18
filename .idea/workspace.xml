@@ -1,18 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="a6e22646-cd00-41e5-8c08-d47f74e544fb" name="Changes" comment="" />
+    <list default="true" id="a6e22646-cd00-41e5-8c08-d47f74e544fb" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/config-server/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/config-server/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/order/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/order/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/product/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/product/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/user/.gitignore" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 2
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 2
+}</component>
   <component name="ProjectId" id="2ge52aMhOEVocix6Tq94bhBEfsx" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -23,7 +34,13 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "main",
     "last_opened_file_path": "C:/Users/Marinescu/Desktop/AWBD_Project_2",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -36,6 +53,7 @@
       <option name="presentableId" value="Default" />
       <updated>1716044996476</updated>
       <workItem from="1716044997487" duration="184000" />
+      <workItem from="1716045924938" duration="1090000" />
     </task>
     <servers />
   </component>
