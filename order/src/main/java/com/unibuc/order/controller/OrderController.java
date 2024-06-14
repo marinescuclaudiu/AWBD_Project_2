@@ -1,7 +1,7 @@
-/*
 package com.unibuc.order.controller;
 
 import com.unibuc.order.model.Order;
+import com.unibuc.order.model.OrderDTO;
 import com.unibuc.order.model.OrderProduct;
 import com.unibuc.order.service.InventoryServiceProxy;
 import com.unibuc.order.service.OrderService;
@@ -28,7 +28,7 @@ public class OrderController {
 
     @PostMapping
     @CircuitBreaker(name="productFromInventoryByBarcode", fallbackMethod = "placeOrderFallback")
-    public Order placeOrder(@RequestBody Order newOrder) {
+    public OrderDTO placeOrder(@RequestBody OrderDTO newOrder) {
         List<OrderProduct> orderItemList = newOrder.getOrderedProducts();
 
         for(OrderProduct item: orderItemList) {
@@ -39,7 +39,32 @@ public class OrderController {
             inventoryServiceProxy.reduceQuantityByProductSkuCode(item.getBarcode(), item.getQuantity());
         }
 
-        return orderService.placeOrder(newOrder);
+        Order order = orderService.placeOrder(convertToEntity(newOrder));
+        return convertToDto(order);
+    }
+
+    private OrderDTO convertToDto(Order order) {
+        OrderDTO dto = new OrderDTO();
+        dto.setUsername(order.getUsername());
+        dto.setOrderNumber(order.getOrderNumber());
+        dto.setOrderedProducts(order.getOrderedProducts());
+        dto.setAddress(order.getAddress());
+        dto.setOrderDate(order.getOrderDate());
+        dto.setPaymentMethod(order.getPaymentMethod());
+        dto.setTotalAmount(order.getTotalAmount());
+        return dto;
+    }
+
+    private Order convertToEntity(OrderDTO dto) {
+        Order order = new Order();
+        order.setUsername(dto.getUsername());
+        order.setOrderNumber(dto.getOrderNumber());
+        order.setOrderedProducts(dto.getOrderedProducts());
+        order.setAddress(dto.getAddress());
+        order.setOrderDate(dto.getOrderDate());
+        order.setPaymentMethod(dto.getPaymentMethod());
+        order.setTotalAmount(dto.getTotalAmount());
+        return order;
     }
 
     // if placing an order without starting inventory service or any other issue from inventory service
@@ -54,7 +79,7 @@ public class OrderController {
         return orderService.findById(id);
     }
 
-    @GetMapping
+/*    @GetMapping
     public CollectionModel<Order> findAll() {
         List<Order> orders = orderService.findAll();
         for (final Order currentOrder : orders) {
@@ -85,6 +110,5 @@ public class OrderController {
         order.add(selfLink);
 
         return order;
-    }
+    }*/
 }
-*/

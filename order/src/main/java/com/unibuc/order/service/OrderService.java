@@ -12,11 +12,9 @@ import java.util.UUID;
 @Service
 public class OrderService {
     private final OrderRepository orderRepository;
-    private final MongoTemplate mongoTemplate;
 
-    public OrderService(OrderRepository orderRepository, MongoTemplate mongoTemplate) {
+    public OrderService(OrderRepository orderRepository) {
         this.orderRepository = orderRepository;
-        this.mongoTemplate = mongoTemplate;
     }
 
     public Order placeOrder(Order order) {
