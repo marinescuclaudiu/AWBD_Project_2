@@ -11,12 +11,12 @@ import lombok.Setter;
 @AllArgsConstructor
 public class OrderProduct {
 
-    @NotBlank(message = "Product name is required")
-    private String product;
+    @NotBlank(message = "Barcode name is required")
+    private String barcode;
 
     @Min(value = 1, message = "Quantity must be at least 1")
     private Integer quantity;
 
-    private Float totalPrice;
+    private Float price;
 
 }

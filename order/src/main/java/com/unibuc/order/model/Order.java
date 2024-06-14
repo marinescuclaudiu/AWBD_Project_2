@@ -1,12 +1,13 @@
 package com.unibuc.order.model;
 
-import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.hateoas.RepresentationModel;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -15,24 +16,23 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @Document(collection = "Orders")
-public class Order {
+public class Order extends RepresentationModel<Order>{
 
     @NotBlank(message = "Username is required")
     private String username;
 
-    @NotBlank(message = "AWB is required")
-    private String awb;
+    @NotBlank(message = "orderNumber is required")
+    @Indexed(unique = true)
+    private String orderNumber;
 
-    private List<OrderProduct> products;
+    private List<OrderProduct> orderedProducts;
 
-    @NotNull(message = "Address is required")
     private Address address;
 
     private LocalDate orderDate;
 
-    @Enumerated(value = EnumType.STRING)
     @NotNull(message = "Payment method is required")
-    private PaymentMethod paymentMethod;
+    private String paymentMethod;
 
     private Float totalAmount;
 }
