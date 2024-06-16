@@ -8,6 +8,8 @@ import com.unibuc.order.service.OrderService;
 import com.unibuc.order.service.ProductServiceProxy;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
@@ -26,6 +28,8 @@ public class OrderController {
     private final InventoryServiceProxy inventoryServiceProxy;
 
     private final ProductServiceProxy productServiceProxy;
+
+    private static final Logger logger = LoggerFactory.getLogger(OrderController.class);
 
     private final ModelMapper modelMapper;
 
@@ -56,9 +60,9 @@ public class OrderController {
             finalPrice += price * item.getQuantity();
 
             inventoryServiceProxy.reduceQuantityByProductSkuCode(item.getBarcode(), item.getQuantity());
-
-
         }
+
+//        logger.info("correlation-id subscription: {}", correlationId);
 
         newOrder.setTotalAmount(finalPrice);
         Order order = orderService.placeOrder(modelMapper.map(newOrder, Order.class));

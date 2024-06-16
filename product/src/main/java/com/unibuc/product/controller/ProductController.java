@@ -9,6 +9,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.modelmapper.ModelMapper;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Link;
@@ -27,6 +29,8 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class ProductController {
     ProductService productService;
     ModelMapper modelMapper;
+
+    private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
 
     public ProductController(ProductService productService, ModelMapper modelMapper) {
         this.productService = productService;
@@ -51,16 +55,19 @@ public class ProductController {
 
     @GetMapping("/barcode/{barcode}")
     public Product findByBarcode(@PathVariable String barcode) {
+//        logger.info("correlation-id product: {}", correlationId);
         return productService.findProductByBarcode(barcode);
     }
 
     @GetMapping("/name")
-    public ProductDTO findByProductName(@RequestParam String productName) {
+    public ProductDTO findByProductName(@RequestParam String productName, @RequestHeader("unibuc-id") String correlationId) {
         Product theProduct =  productService.findProductByProductName(productName);
         ProductDTO productDTO = modelMapper.map(theProduct, ProductDTO.class);
 
         Link selfLink = linkTo(methodOn(ProductController.class).findByBarcode(theProduct.getBarcode())).withSelfRel();
         productDTO.add(selfLink);
+
+        logger.info("correlation-id product: {}", correlationId);
 
         return productDTO;
     }
@@ -89,16 +96,16 @@ public class ProductController {
     }
 
     @DeleteMapping("/{barcode}")
-    @Operation(summary = "Delete product by product id")
+    @Operation(summary = "Delete product by product barcode")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Product successfully deleted",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = ProductDTO.class))}),
-            @ApiResponse(responseCode = "400", description = "Invalid id",
+            @ApiResponse(responseCode = "400", description = "Invalid barcode",
                     content = @Content),
             @ApiResponse(responseCode = "404", description = "Product not found",
                     content = @Content)})
-    public ResponseEntity<Void> deleteById(@PathVariable String barcode) {
+    public ResponseEntity<Void> deleteByBarcode(@PathVariable String barcode) {
 
         boolean deleted = productService.deleteByBarcode(barcode);
 
