@@ -1,14 +1,16 @@
 package com.unibuc.order.controller;
 
 import com.unibuc.order.model.Order;
-import com.unibuc.order.model.OrderDTO;
+import com.unibuc.order.dto.OrderDTO;
 import com.unibuc.order.model.OrderProduct;
 import com.unibuc.order.service.InventoryServiceProxy;
 import com.unibuc.order.service.OrderService;
+import com.unibuc.order.service.ProductServiceProxy;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.modelmapper.ModelMapper;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Link;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,11 +25,17 @@ public class OrderController {
     private final OrderService orderService;
     private final InventoryServiceProxy inventoryServiceProxy;
 
+    private final ProductServiceProxy productServiceProxy;
+
     private final ModelMapper modelMapper;
 
-    public OrderController(OrderService orderService, InventoryServiceProxy inventoryServiceProxy, ModelMapper modelMapper) {
+    public OrderController(OrderService orderService,
+                           InventoryServiceProxy inventoryServiceProxy,
+                           ProductServiceProxy productServiceProxy,
+                           ModelMapper modelMapper) {
         this.orderService = orderService;
         this.inventoryServiceProxy = inventoryServiceProxy;
+        this.productServiceProxy = productServiceProxy;
         this.modelMapper = modelMapper;
     }
 
@@ -36,45 +44,27 @@ public class OrderController {
     public OrderDTO placeOrder(@RequestBody OrderDTO newOrder) {
         List<OrderProduct> orderItemList = newOrder.getOrderedProducts();
 
+        float finalPrice = 0;
+
         for (OrderProduct item : orderItemList) {
             if (!inventoryServiceProxy.productIsInStockBySkuCode(item.getBarcode())) {
                 throw new RuntimeException("The product " + item.getBarcode() + " is not in stock at the moment");
             }
 
+            // calculate total amount for this order
+            float price = productServiceProxy.findProductByBarcode(item.getBarcode()).getPrice();
+            finalPrice += price * item.getQuantity();
+
             inventoryServiceProxy.reduceQuantityByProductSkuCode(item.getBarcode(), item.getQuantity());
 
-            // calculate total amount
 
         }
 
+        newOrder.setTotalAmount(finalPrice);
         Order order = orderService.placeOrder(modelMapper.map(newOrder, Order.class));
 
         return modelMapper.map(order, OrderDTO.class);
     }
-
-//    private OrderDTO convertToDto(Order order) {
-//        OrderDTO dto = new OrderDTO();
-//        dto.setUsername(order.getUsername());
-//        dto.setOrderNumber(order.getOrderNumber());
-//        dto.setOrderedProducts(order.getOrderedProducts());
-//        dto.setAddress(order.getAddress());
-//        dto.setOrderDate(order.getOrderDate());
-//        dto.setPaymentMethod(order.getPaymentMethod());
-//        dto.setTotalAmount(order.getTotalAmount());
-//        return dto;
-//    }
-//
-//    private Order convertToEntity(OrderDTO dto) {
-//        Order order = new Order();
-//        order.setUsername(dto.getUsername());
-//        order.setOrderNumber(dto.getOrderNumber());
-//        order.setOrderedProducts(dto.getOrderedProducts());
-//        order.setAddress(dto.getAddress());
-//        order.setOrderDate(dto.getOrderDate());
-//        order.setPaymentMethod(dto.getPaymentMethod());
-//        order.setTotalAmount(dto.getTotalAmount());
-//        return order;
-//    }
 
     // if placing an order without starting inventory service or any other issue from inventory service
     // the function placeOrder() will redirect to this function placeOrderFallback()

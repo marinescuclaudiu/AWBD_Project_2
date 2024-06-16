@@ -1,4 +1,4 @@
-package com.unibuc.inventory.model;
+package com.unibuc.order.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,7 +1,7 @@
 package com.unibuc.product.service;
 
 import com.unibuc.product.dto.ProductDTO;
-import com.unibuc.product.exception.NotFoundException;
+import com.unibuc.product.exception.ProductNotFoundException;
 import com.unibuc.product.helper.BeanHelper;
 import com.unibuc.product.model.Product;
 import com.unibuc.product.repository.ProductRepository;
@@ -50,7 +50,7 @@ public class ProductService {
 
         if (!productRepository.existsByBarcode(barcode)) {
             log.error("Product with barcode {} not found", barcode);
-            throw new NotFoundException("Product with barcode " + barcode + " not found!");
+            throw new ProductNotFoundException(barcode);
         }
 
         productRepository.deleteByBarcode(barcode);
@@ -66,7 +66,7 @@ public class ProductService {
 
         if (product.isEmpty()) {
             log.error("Product with barcode {} not found", barcode);
-            throw new NotFoundException("Product with barcode " + barcode + " not found!");
+            throw new ProductNotFoundException(barcode);
         }
 
         BeanUtils.copyProperties(newProduct, product.get(), BeanHelper.getNullPropertyNames(newProduct));
@@ -84,10 +84,9 @@ public class ProductService {
     public void deleteProductWhenEmptyInventory(String barcode) {
         if (productRepository.findByBarcode(barcode).isEmpty()) {
             log.error("Product with barcode {} not found", barcode);
-            throw new NotFoundException("Product with barcode " + barcode + " not found!");
+            throw new ProductNotFoundException(barcode);
         }
 
-        Product theProduct = productRepository.findByBarcode(barcode).get();
         productRepository.deleteByBarcode(barcode);
     }
 
@@ -95,7 +94,7 @@ public class ProductService {
         Optional<Product> optionalProduct = productRepository.findByBarcode(barcode);
 
         if (optionalProduct.isEmpty()) {
-            throw new RuntimeException("Product with barcode " + barcode + " was not found!");
+            throw new ProductNotFoundException(barcode);
         }
 
         return optionalProduct.get();

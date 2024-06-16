@@ -1,5 +1,7 @@
-package com.unibuc.order.model;
+package com.unibuc.order.dto;
 
+import com.unibuc.order.model.Address;
+import com.unibuc.order.model.OrderProduct;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

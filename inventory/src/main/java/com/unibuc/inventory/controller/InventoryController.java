@@ -27,12 +27,6 @@ public class InventoryController {
         return inventoryService.save(inventory);
     }
 
-    @GetMapping("/price/{barcode}")
-    @ResponseStatus(HttpStatus.OK)
-    public Float getPriceOfProductByBarcode(@PathVariable String barcode) {
-        return productServiceProxy.findProductByBarcode(barcode).getPrice();
-    }
-
     @GetMapping("/{sku-code}")
     @ResponseStatus(HttpStatus.OK)
     public boolean isInStock(@PathVariable("sku-code") String skuCode) {

@@ -45,7 +45,7 @@ public class ProductController {
 
     @PutMapping
     public ResponseEntity<Product> update(@Valid @RequestBody Product product){
-        Product updatedSubscription = productService.save(product);
+        Product updatedSubscription = productService.update(product.getBarcode(), product);
         return ResponseEntity.ok(updatedSubscription);
     }
 
