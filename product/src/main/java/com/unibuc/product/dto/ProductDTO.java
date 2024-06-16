@@ -1,22 +1,22 @@
-package com.unibuc.product.model;
+package com.unibuc.product.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.unibuc.product.model.Review;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.data.mongodb.core.mapping.Document;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.hateoas.RepresentationModel;
 
 import java.util.List;
-import java.util.Set;
 
-@Setter
-@Getter
+@Data
 @AllArgsConstructor
-@Document(collection = "Products")
-public class Product {
-
+@NoArgsConstructor
+public class ProductDTO extends RepresentationModel<ProductDTO> {
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String barcode;
 
     @NotBlank(message = "Name is required")
@@ -29,7 +29,7 @@ public class Product {
     @Positive(message = "Price must be positive")
     private Float price;
 
-    private Set<String> categories;
+    private List<String> categories;
 
     private List<Review> reviews;
 }

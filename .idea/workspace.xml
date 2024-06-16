@@ -5,7 +5,32 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a6e22646-cd00-41e5-8c08-d47f74e544fb" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/inventory/src/main/java/com/unibuc/inventory/config/SwaggerConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/inventory/src/main/java/com/unibuc/inventory/config/WebMvcConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/inventory/src/main/java/com/unibuc/inventory/model/Product.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/inventory/src/main/java/com/unibuc/inventory/service/ProductServiceProxy.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/product/src/main/java/com/unibuc/product/config/SwaggerConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/product/src/main/java/com/unibuc/product/config/WebMvcConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/product/src/main/java/com/unibuc/product/controller/ProductController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/product/src/main/java/com/unibuc/product/dto/ProductDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/product/src/main/java/com/unibuc/product/exception/NotFoundException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/product/src/main/java/com/unibuc/product/helper/BeanHelper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/product/src/main/java/com/unibuc/product/service/ProductService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/inventory/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/inventory/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/inventory/src/main/java/com/unibuc/inventory/InventoryApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/inventory/src/main/java/com/unibuc/inventory/InventoryApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/inventory/src/main/java/com/unibuc/inventory/controller/InventoryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/inventory/src/main/java/com/unibuc/inventory/controller/InventoryController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/inventory/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/inventory/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/order/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/order/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/order/src/main/java/com/unibuc/order/OrderApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/order/src/main/java/com/unibuc/order/OrderApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/order/src/main/java/com/unibuc/order/controller/OrderController.java" beforeDir="false" afterPath="$PROJECT_DIR$/order/src/main/java/com/unibuc/order/controller/OrderController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/order/src/main/java/com/unibuc/order/model/Inventory.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/product/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/product/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/product/src/main/java/com/unibuc/product/ProductApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/product/src/main/java/com/unibuc/product/ProductApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/product/src/main/java/com/unibuc/product/model/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/product/src/main/java/com/unibuc/product/model/Product.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/product/src/main/java/com/unibuc/product/model/Review.java" beforeDir="false" afterPath="$PROJECT_DIR$/product/src/main/java/com/unibuc/product/model/Review.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/product/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/product/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,7 +74,7 @@
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;jdk.selected.JAVA_MODULE&quot;: &quot;openjdk-21&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Marinescu/Desktop/AWBD_Project_2&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/wrest/Desktop/Flavia/MASTER/MASTER - ANUL I/SEMESTRUL AL II-LEA/04_AWBD/PROJECTS/PROJECT2&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -94,6 +119,8 @@
       <workItem from="1718374564841" duration="2592000" />
       <workItem from="1718383136223" duration="71000" />
       <workItem from="1718383234419" duration="5000" />
+      <workItem from="1718540586186" duration="43000" />
+      <workItem from="1718545138286" duration="22000" />
     </task>
     <servers />
   </component>

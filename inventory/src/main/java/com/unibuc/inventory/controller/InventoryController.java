@@ -3,6 +3,7 @@ package com.unibuc.inventory.controller;
 import com.unibuc.inventory.config.PropertiesConfig;
 import com.unibuc.inventory.model.Inventory;
 import com.unibuc.inventory.service.InventoryService;
+import com.unibuc.inventory.service.ProductServiceProxy;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -12,16 +13,24 @@ import org.springframework.web.bind.annotation.*;
 public class InventoryController {
     private final InventoryService inventoryService;
     private final PropertiesConfig configuration;
+    private final ProductServiceProxy productServiceProxy;
 
-    public InventoryController(InventoryService inventoryService, PropertiesConfig configuration) {
+    public InventoryController(InventoryService inventoryService, PropertiesConfig configuration, ProductServiceProxy productServiceProxy) {
         this.inventoryService = inventoryService;
         this.configuration = configuration;
+        this.productServiceProxy = productServiceProxy;
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Inventory addToInventory(@RequestBody @Valid Inventory inventory){
         return inventoryService.save(inventory);
+    }
+
+    @GetMapping("/price/{barcode}")
+    @ResponseStatus(HttpStatus.OK)
+    public Float getPriceOfProductByBarcode(@PathVariable String barcode) {
+        return productServiceProxy.findProductByBarcode(barcode).getPrice();
     }
 
     @GetMapping("/{sku-code}")
@@ -46,6 +55,11 @@ public class InventoryController {
     public Integer reduceQuantityOfProductBySkuCode(@PathVariable(name = "sku-code") String skuCode,
                                                     @PathVariable int quantity) {
         Inventory updatedInventory = inventoryService.reduceQuantityForProductByProductSkuCode(skuCode, quantity);
+
+        if (updatedInventory.getQuantity() == 0) {
+            System.out.println("test here");
+            productServiceProxy.deleteProductWhenEmptyInventory(skuCode);
+        }
 
         return updatedInventory.getQuantity();
     }

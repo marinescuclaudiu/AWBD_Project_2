@@ -5,6 +5,7 @@ import com.unibuc.order.repository.OrderRepository;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -19,6 +20,7 @@ public class OrderService {
 
     public Order placeOrder(Order order) {
         order.setOrderNumber(UUID.randomUUID().toString());
+        order.setOrderDate(LocalDate.now());
 
         return orderRepository.save(order);
     }

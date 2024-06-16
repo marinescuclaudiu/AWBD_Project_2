@@ -1,8 +1,10 @@
 package com.unibuc.order;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.hateoas.config.EnableHypermediaSupport;
 import org.springframework.cloud.openfeign.EnableFeignClients;
@@ -15,6 +17,11 @@ public class OrderApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(OrderApplication.class, args);
+    }
+
+    @Bean
+    public ModelMapper modelMapper() {
+        return new ModelMapper();
     }
 
 }
