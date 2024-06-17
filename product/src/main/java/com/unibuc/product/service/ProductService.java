@@ -1,7 +1,7 @@
 package com.unibuc.product.service;
 
 import com.unibuc.product.dto.ProductDTO;
-import com.unibuc.product.exception.ProductNotFoundException;
+import com.unibuc.product.exception.ResourceNotFoundException;
 import com.unibuc.product.helper.BeanHelper;
 import com.unibuc.product.model.Product;
 import com.unibuc.product.repository.ProductRepository;
@@ -29,6 +29,7 @@ public class ProductService {
     @Transactional
     public Product save(Product product) {
         log.info("Saving product: {}", product.getName());
+        log.info("Product saved: {}", product.getName());
         return productRepository.save(product);
     }
 
@@ -50,7 +51,7 @@ public class ProductService {
 
         if (!productRepository.existsByBarcode(barcode)) {
             log.error("Product with barcode {} not found", barcode);
-            throw new ProductNotFoundException(barcode);
+            throw new ResourceNotFoundException(barcode);
         }
 
         productRepository.deleteByBarcode(barcode);
@@ -61,12 +62,12 @@ public class ProductService {
 
     @Transactional
     public Product update(String barcode, Product newProduct) {
-        log.info("Updating product with ID: {}", barcode);
+        log.info("Updating product with barcode: {}", barcode);
         Optional<Product> product = productRepository.findByBarcode(barcode);
 
         if (product.isEmpty()) {
             log.error("Product with barcode {} not found", barcode);
-            throw new ProductNotFoundException(barcode);
+            throw new ResourceNotFoundException(barcode);
         }
 
         BeanUtils.copyProperties(newProduct, product.get(), BeanHelper.getNullPropertyNames(newProduct));
@@ -78,25 +79,40 @@ public class ProductService {
     }
 
     public Product findProductByProductName(String productName) {
-        return productRepository.findByName(productName);
+        log.info("Fetching product with name: {}", productName);
+        Optional<Product> optionalProduct = productRepository.findByName(productName);
+
+        if (optionalProduct.isEmpty()) {
+            log.error("Product with name {} not found", productName);
+            throw new ResourceNotFoundException("Product with name " + productName + " not found");
+        }
+
+        log.info("Product found: {}", optionalProduct.get().getName());
+        return optionalProduct.get();
     }
 
     public void deleteProductWhenEmptyInventory(String barcode) {
+        log.info("Deleting product with barcode: {}", barcode);
+
         if (productRepository.findByBarcode(barcode).isEmpty()) {
             log.error("Product with barcode {} not found", barcode);
-            throw new ProductNotFoundException(barcode);
+            throw new ResourceNotFoundException("Product with barcode " + barcode + " not found");
         }
 
         productRepository.deleteByBarcode(barcode);
+        log.info("Product deleted successfully");
     }
 
     public Product findProductByBarcode(String barcode) {
+        log.info("Fetching product with barcode: {}", barcode);
         Optional<Product> optionalProduct = productRepository.findByBarcode(barcode);
 
         if (optionalProduct.isEmpty()) {
-            throw new ProductNotFoundException(barcode);
+            log.error("Product with barcode {} not found", barcode);
+            throw new ResourceNotFoundException("Product with barcode " + barcode + " not found");
         }
 
+        log.info("Product found: {}", optionalProduct.get().getName());
         return optionalProduct.get();
     }
 
