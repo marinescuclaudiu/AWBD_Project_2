@@ -24,6 +24,6 @@
 6. Fault tolerance: Resilience4j default behavior in case of failure. ✅
 7. Deploy with Docker and Kubernetes. ❌
 8. Add swagger documentation of the API. ✅
-9. Add error handling. ❌
+9. Add error handling. ✅
 10. Add HATEOS links. ✅
 11. ***WebFlux (optional) ❌
