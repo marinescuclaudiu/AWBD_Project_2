@@ -2,7 +2,7 @@
 
 ## Project, 2nd Semester
 
-> Name of the project: Ecommerce
+> Name of the project: E-commerce
 > 
 > Student 1: Duță Flavia
 > 
@@ -11,6 +11,21 @@
 > Grupa 406
 > 
 > FMI, UniBuc
+
+-----
+
+This project uses 3 microservices:
+1. PRODUCT-SERVICE
+2. INVENTORY-SERVICE
+3. ORDER-SERVICE
+
+User ports:
+- products: 8080
+- order: 8081
+- inventory: 8082, 8083
+- config: 8070
+- eureka: 8761
+- gateway: 8071
 
 -----
 
