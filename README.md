@@ -32,7 +32,7 @@ Used ports:
 1. Microservices configuration management using Spring Cloud Config Server ✅
 2. Using Feign Rest Client ✅
 3. Service discovery --- Naming Server Eureka ✅
-4. Intelligent routing, load balancing –-- Cloud Load Balancer ❌
+4. Intelligent routing, load balancing –-- Cloud Load Balancer ✅
 5. Visibility: monitoring services/servers Zipkin Distributed Tracing Server ✅
 6. Fault tolerance: Resilience4j default behavior in case of failure. ✅
 7. Deploy with Docker and Kubernetes. ❌
