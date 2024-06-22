@@ -84,8 +84,8 @@ public class ProductController {
             Link selfLink = linkTo(methodOn(ProductController.class).findByBarcode(productDTO.getBarcode())).withSelfRel();
             productDTO.add(selfLink);
 
-//            Link deleteLink = linkTo(methodOn(ProductController.class).deleteById(product.getId())).withRel("deleteProduct");
-//            productDTO.add(deleteLink);
+            Link deleteLink = linkTo(methodOn(ProductController.class).deleteByBarcode(productDTO.getBarcode())).withRel("deleteProduct");
+            productDTO.add(deleteLink);
 
             Link postLink = linkTo(methodOn(ProductController.class).save(modelMapper.map(productDTO, Product.class))).withRel("saveSubscription");
             productDTO.add(postLink);
