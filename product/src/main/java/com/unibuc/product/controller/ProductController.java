@@ -55,19 +55,22 @@ public class ProductController {
 
     @GetMapping("/barcode/{barcode}")
     public Product findByBarcode(@PathVariable String barcode) {
-//        logger.info("correlation-id product: {}", correlationId);
         return productService.findProductByBarcode(barcode);
     }
 
+    @GetMapping("/barcode/{barcode}/name")
+    public String findNameOfProductByBarcode(@PathVariable String barcode, @RequestHeader("unibuc-id") String correlationId) {
+        logger.info("correlation-id product: {}", correlationId);
+        return productService.findProductByBarcode(barcode).getName();
+    }
+
     @GetMapping("/name")
-    public ProductDTO findByProductName(@RequestParam String productName, @RequestHeader("unibuc-id") String correlationId) {
+    public ProductDTO findByProductName(@RequestParam String productName) {
         Product theProduct =  productService.findProductByProductName(productName);
         ProductDTO productDTO = modelMapper.map(theProduct, ProductDTO.class);
 
         Link selfLink = linkTo(methodOn(ProductController.class).findByBarcode(theProduct.getBarcode())).withSelfRel();
         productDTO.add(selfLink);
-
-        logger.info("correlation-id product: {}", correlationId);
 
         return productDTO;
     }

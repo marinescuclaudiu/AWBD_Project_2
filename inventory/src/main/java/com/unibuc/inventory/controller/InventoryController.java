@@ -5,6 +5,8 @@ import com.unibuc.inventory.model.Inventory;
 import com.unibuc.inventory.service.InventoryService;
 import com.unibuc.inventory.service.ProductServiceProxy;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,6 +16,8 @@ public class InventoryController {
     private final InventoryService inventoryService;
     private final PropertiesConfig configuration;
     private final ProductServiceProxy productServiceProxy;
+
+    private static final Logger logger = LoggerFactory.getLogger(InventoryController.class);
 
     public InventoryController(InventoryService inventoryService, PropertiesConfig configuration, ProductServiceProxy productServiceProxy) {
         this.inventoryService = inventoryService;
@@ -43,6 +47,13 @@ public class InventoryController {
     public String getRetailer() {
         Inventory inventory = new Inventory(configuration.getRetailer(), configuration.getBrand());
         return inventory.getRetailer();
+    }
+
+    @GetMapping("/barcode/{barcode}")
+    public String getNameOfProductByProductBarcode(@PathVariable String barcode,
+                                            @RequestHeader("unibuc-id") String correlationId) {
+        logger.info("correlation-id subscription: {}", correlationId);
+        return productServiceProxy.getNameOfProductByProductBarcode(barcode, correlationId);
     }
 
     @PutMapping("/{sku-code}/reduce-quantity-by/{quantity}") // return remained quantity

@@ -61,9 +61,6 @@ public class OrderController {
 
             inventoryServiceProxy.reduceQuantityByProductSkuCode(item.getBarcode(), item.getQuantity());
         }
-
-//        logger.info("correlation-id subscription: {}", correlationId);
-
         newOrder.setTotalAmount(finalPrice);
         Order order = orderService.placeOrder(modelMapper.map(newOrder, Order.class));
 

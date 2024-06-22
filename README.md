@@ -8,7 +8,7 @@
 > 
 > Student 2: Marinescu Claudiu
 > 
-> Grupa 406
+> Grupa: 406
 > 
 > FMI, UniBuc
 
