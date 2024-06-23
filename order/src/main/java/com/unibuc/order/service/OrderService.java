@@ -2,6 +2,8 @@ package com.unibuc.order.service;
 
 import com.unibuc.order.exception.ResourceNotFoundException;
 import com.unibuc.order.model.Order;
+import com.unibuc.order.model.OrderProduct;
+import com.unibuc.order.model.Product;
 import com.unibuc.order.repository.OrderRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -15,15 +17,41 @@ import java.util.UUID;
 @Slf4j
 public class OrderService {
     private final OrderRepository orderRepository;
+    private final ProductServiceProxy productServiceProxy;
 
-    public OrderService(OrderRepository orderRepository) {
+    private final InventoryServiceProxy inventoryServiceProxy;
+
+
+    public OrderService(OrderRepository orderRepository,
+                        ProductServiceProxy productServiceProxy,
+                        InventoryServiceProxy inventoryServiceProxy) {
         this.orderRepository = orderRepository;
+        this.productServiceProxy = productServiceProxy;
+        this.inventoryServiceProxy = inventoryServiceProxy;
     }
 
     public Order placeOrder(Order order) {
         log.info("Placing the order for: {}", order.getUsername() );
         order.setOrderNumber(UUID.randomUUID().toString());
         order.setOrderDate(LocalDate.now());
+
+        float finalPrice = 0;
+
+        for (OrderProduct orderProduct: order.getOrderedProducts()) {
+            Product currentProduct = productServiceProxy.findProductByBarcode(orderProduct.getBarcode());
+            float price = currentProduct.getPrice();
+            orderProduct.setPrice(price);
+
+            if (!inventoryServiceProxy.productIsInStockBySkuCode(currentProduct.getBarcode())) {
+                throw new RuntimeException("The product " + currentProduct.getBarcode() + " is not in stock at the moment.");
+            } else {
+                // calculate total amount for this order
+                finalPrice += price * orderProduct.getQuantity();
+                inventoryServiceProxy.reduceQuantityByProductSkuCode(orderProduct.getBarcode(), orderProduct.getQuantity());
+            }
+        }
+
+        order.setTotalAmount(finalPrice);
 
         log.info("Order saved with number: {}", order.getOrderNumber());
         return orderRepository.save(order);

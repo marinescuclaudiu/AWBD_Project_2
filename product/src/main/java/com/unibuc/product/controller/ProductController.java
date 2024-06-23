@@ -38,7 +38,7 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<Product> save(@Valid @RequestBody Product product){
+    public ResponseEntity<Product> save(@Valid @RequestBody Product product) {
         Product savedSubscription = modelMapper.map(productService.save(product), Product.class);
         URI locationUri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{productId}").buildAndExpand(savedSubscription.getBarcode())
@@ -48,7 +48,7 @@ public class ProductController {
     }
 
     @PutMapping
-    public ResponseEntity<Product> update(@Valid @RequestBody Product product){
+    public ResponseEntity<Product> update(@Valid @RequestBody Product product) {
         Product updatedSubscription = productService.update(product.getBarcode(), product);
         return ResponseEntity.ok(updatedSubscription);
     }
@@ -65,20 +65,18 @@ public class ProductController {
     }
 
     @GetMapping("/name")
-    public ProductDTO findByProductName(@RequestParam String productName) {
-        Product theProduct =  productService.findProductByProductName(productName);
-        ProductDTO productDTO = modelMapper.map(theProduct, ProductDTO.class);
-
-        Link selfLink = linkTo(methodOn(ProductController.class).findByBarcode(theProduct.getBarcode())).withSelfRel();
-        productDTO.add(selfLink);
-
-        return productDTO;
+    public List<ProductDTO> findProductsByProductName(@RequestParam String productName) {
+        return productService.findProductByProductName(productName);
     }
 
     @GetMapping
-    public CollectionModel<ProductDTO> findAll(){
-        List<ProductDTO> productDtoList =  productService.findAll();
-
+    @Operation(summary = "Find all products")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Products received successfully",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ProductDTO.class))})})
+    public CollectionModel<ProductDTO> findAll() {
+        List<ProductDTO> productDtoList = productService.findAll();
 
         for (final ProductDTO productDTO : productDtoList) {
             Link selfLink = linkTo(methodOn(ProductController.class).findByBarcode(productDTO.getBarcode())).withSelfRel();
@@ -117,11 +115,5 @@ public class ProductController {
         } else {
             return ResponseEntity.notFound().build();
         }
-    }
-
-    @DeleteMapping("/{barcode}/null-quantity")
-    public String deleteProductWhenEmptyInventory(@PathVariable String barcode) {
-        productService.deleteProductWhenEmptyInventory(barcode);
-        return "The product with barcode " + barcode + " was successfully deleted";
     }
 }

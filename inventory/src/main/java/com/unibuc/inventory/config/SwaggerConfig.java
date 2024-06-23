@@ -12,7 +12,7 @@ public class SwaggerConfig {
     @Bean
     public OpenAPI customOpenAPI() {
         return new OpenAPI().info(new Info().title("Spring Cloud application API")
-                .version("1").description("demo Spring Cloud"));
+                .version("1").description("INVENTORY-SERVICE with Spring Cloud Architecture"));
 
     }
 }

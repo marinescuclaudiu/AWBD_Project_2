@@ -1,6 +1,7 @@
 package com.unibuc.product.service;
 
 import com.unibuc.product.dto.ProductDTO;
+import com.unibuc.product.exception.DuplicateEntityException;
 import com.unibuc.product.exception.ResourceNotFoundException;
 import com.unibuc.product.helper.BeanHelper;
 import com.unibuc.product.model.Product;
@@ -28,8 +29,16 @@ public class ProductService {
 
     @Transactional
     public Product save(Product product) {
+        log.info("Checking if there is already another product with the same barcode: {}", product.getBarcode());
+
+        if (productRepository.existsByBarcode(product.getBarcode())) {
+            throw new DuplicateEntityException("A product with the same barcode is already present in the database");
+        }
+
+        log.info("Check passed successfully for barcode: {}", product.getBarcode());
         log.info("Saving product: {}", product.getName());
         log.info("Product saved: {}", product.getName());
+
         return productRepository.save(product);
     }
 
@@ -78,17 +87,13 @@ public class ProductService {
         return newProduct;
     }
 
-    public Product findProductByProductName(String productName) {
+    public List<ProductDTO> findProductByProductName(String productName) {
         log.info("Fetching product with name: {}", productName);
-        Optional<Product> optionalProduct = productRepository.findByName(productName);
+        List<Product> productsWithSameName = productRepository.findByName(productName);
 
-        if (optionalProduct.isEmpty()) {
-            log.error("Product with name {} not found", productName);
-            throw new ResourceNotFoundException("Product with name " + productName + " not found");
-        }
-
-        log.info("Product found: {}", optionalProduct.get().getName());
-        return optionalProduct.get();
+        return productsWithSameName.stream().map(
+                product -> modelMapper.map(product, ProductDTO.class)
+        ).collect(Collectors.toList());
     }
 
     public void deleteProductWhenEmptyInventory(String barcode) {

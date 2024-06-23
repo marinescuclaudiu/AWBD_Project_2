@@ -18,5 +18,4 @@ public class OrderProduct {
     private Integer quantity;
 
     private Float price;
-
 }

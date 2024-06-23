@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 
 @FeignClient(value = "product")
 public interface ProductServiceProxy {
-    @DeleteMapping("/product/{barcode}/null-quantity")
+    @DeleteMapping("/product/{barcode}")
     String deleteProductWhenEmptyInventory(@PathVariable String barcode);
 
     @GetMapping("/product/barcode/{barcode}/name")

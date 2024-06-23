@@ -9,4 +9,6 @@ import java.util.Optional;
 @Repository
 public interface InventoryRepository extends MongoRepository<Inventory, String> {
     Optional<Inventory> findBySkuCode(String skuCode);
+
+    boolean existsBySkuCode(String skuCode);
 }

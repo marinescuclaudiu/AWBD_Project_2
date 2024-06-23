@@ -1,10 +1,12 @@
 package com.unibuc.inventory.service;
 
+import com.unibuc.inventory.exception.DuplicateEntityException;
 import com.unibuc.inventory.exception.InsufficientStockException;
 import com.unibuc.inventory.exception.ResourceNotFoundException;
 import com.unibuc.inventory.model.Inventory;
 import com.unibuc.inventory.repository.InventoryRepository;
 import jakarta.transaction.Transactional;
+import jakarta.ws.rs.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -19,10 +21,35 @@ public class InventoryService {
         this.inventoryRepository = inventoryRepository;
     }
 
+    @Transactional
     public Inventory save(Inventory inventory) {
+        log.info("Check if the sku code is not present in the database: {}", inventory.getSkuCode());
+
+        if (inventoryRepository.existsBySkuCode(inventory.getSkuCode())) {
+            throw new DuplicateEntityException("There is already a product with the sku code " + inventory.getSkuCode() + " in the stock. Update that one.");
+        }
+
+        log.info("Check passed successfully!");
         log.info("Saving product with sku code: {}", inventory.getSkuCode());
         log.info("Product saved with sku code: {}", inventory.getSkuCode());
         return inventoryRepository.save(inventory);
+    }
+
+    @Transactional
+    public Inventory updateBySkuCode(Inventory updatedInventory) {
+        String skucode = updatedInventory.getSkuCode();
+
+        Optional<Inventory> optionalInventory = inventoryRepository.findBySkuCode(skucode);
+        if (optionalInventory.isEmpty()) {
+            throw new ResourceNotFoundException("There is no product with SKU code " + skucode);
+        }
+
+        Inventory existingInventory = optionalInventory.get();
+        existingInventory.setRetailer(updatedInventory.getRetailer());
+        existingInventory.setBrand(updatedInventory.getBrand());
+        existingInventory.setQuantity(updatedInventory.getQuantity());
+
+        return inventoryRepository.save(existingInventory);
     }
 
     public boolean isInStock(String skuCode) {

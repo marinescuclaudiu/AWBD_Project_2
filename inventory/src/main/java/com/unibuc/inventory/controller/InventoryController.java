@@ -52,7 +52,7 @@ public class InventoryController {
     @GetMapping("/barcode/{barcode}")
     public String getNameOfProductByProductBarcode(@PathVariable String barcode,
                                             @RequestHeader("unibuc-id") String correlationId) {
-        logger.info("correlation-id subscription: {}", correlationId);
+        logger.info("correlation-id inventory: {}", correlationId);
         return productServiceProxy.getNameOfProductByProductBarcode(barcode, correlationId);
     }
 
@@ -67,5 +67,10 @@ public class InventoryController {
         }
 
         return updatedInventory.getQuantity();
+    }
+
+    @PutMapping("/update")
+    public Inventory updateBySkuCode(@RequestBody @Valid Inventory newInventory) {
+        return inventoryService.updateBySkuCode(newInventory);
     }
 }

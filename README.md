@@ -20,7 +20,7 @@ This project uses 3 microservices:
 Used ports:
 - products: 8080
 - order: 8081
-- inventory: 8082, 8083
+- inventory: 8083, 8084
 - config: 8070
 - eureka: 8761
 - gateway: 8071
