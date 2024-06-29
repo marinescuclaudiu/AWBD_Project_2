@@ -21,7 +21,6 @@ public class OrderService {
 
     private final InventoryServiceProxy inventoryServiceProxy;
 
-
     public OrderService(OrderRepository orderRepository,
                         ProductServiceProxy productServiceProxy,
                         InventoryServiceProxy inventoryServiceProxy) {
@@ -54,6 +53,12 @@ public class OrderService {
         order.setTotalAmount(finalPrice);
 
         log.info("Order saved with number: {}", order.getOrderNumber());
+        return orderRepository.save(order);
+    }
+
+    public Order placeOrderInCaseOfError(Order order) {
+        order.setOrderNumber(UUID.randomUUID().toString());
+        order.setOrderDate(LocalDate.now());
         return orderRepository.save(order);
     }
 
